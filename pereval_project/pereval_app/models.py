@@ -41,9 +41,9 @@ class PerevalImage(models.Model):
     data = models.TextField()
     title = models.CharField(max_length=100)
 
-class PerevalArea(models.Model):
-    id_parent = models.BigIntegerField()
-    title = models.TextField()
-
-class SprActivitiesType(models.Model):
-    title = models.TextField()
+# class PerevalArea(models.Model):
+#     id_parent = models.BigIntegerField()
+#     title = models.TextField()
+#
+# class SprActivitiesType(models.Model):
+#     title = models.TextField()
