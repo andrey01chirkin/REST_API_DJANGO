@@ -25,6 +25,7 @@ class PerevalImageSerializer(serializers.ModelSerializer):
         model = PerevalImage
         fields = ['data', 'title']
 
+
 class PerevalAddedSerializer(serializers.ModelSerializer):
     user = UserSerializer()
     coords = CoordsSerializer()
@@ -58,6 +59,3 @@ class PerevalAddedSerializer(serializers.ModelSerializer):
             PerevalImage.objects.create(pereval=pereval, **image_data)
 
         return pereval
-
-
-
