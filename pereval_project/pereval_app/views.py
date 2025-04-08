@@ -1,3 +1,6 @@
+from rest_framework.generics import ListAPIView, GenericAPIView
+from rest_framework.mixins import ListModelMixin
+from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -104,3 +107,36 @@ class SubmitDataUpdateView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
+
+class SubmitDataListView(APIView):
+    def get(self, request):
+        # Получаем email из параметров запроса
+        email = request.query_params.get('user__email', None)
+
+        # Если email не указан, возвращаем ошибку
+        if not email:
+            return Response(
+                {"message": "Не указан email пользователя", "status": 400},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            # Фильтруем записи по email пользователя
+            perevals = PerevalAdded.objects.filter(user__email=email)
+
+            # Если записи не найдены, возвращаем пустой список
+            if not perevals.exists():
+                return Response(
+                    {"message": "Нет записей для указанного пользователя", "status": 404},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+            # Сериализуем найденные записи
+            serializer = PerevalAddedSerializer(perevals, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response(
+                {"message": f"Ошибка сервера: {str(e)}", "status": 500},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
