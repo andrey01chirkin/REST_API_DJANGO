@@ -3,30 +3,80 @@ from .models import PerevalAdded, User, Coords, Level, PerevalImage
 
 
 class UserSerializer(serializers.ModelSerializer):
+    """
+        Сериализатор пользователя.
+
+        Включает данные:
+        - email (уникальный);
+        - фамилия, имя, отчество;
+        - номер телефона.
+
+        Используется при добавлении и отображении информации о пользователе.
+    """
     class Meta:
         model = User
         fields = '__all__'
 
 
 class CoordsSerializer(serializers.ModelSerializer):
+    """
+        Сериализатор координат перевала.
+
+        Включает:
+        - широту (latitude),
+        - долготу (longitude),
+        - высоту (height).
+
+        Используется в структуре перевала.
+    """
     class Meta:
         model = Coords
         fields = '__all__'
 
 
 class LevelSerializer(serializers.ModelSerializer):
+    """
+        Сериализатор уровня сложности перевала.
+
+        Содержит категории сложности по временам года:
+        - winter
+        - summer
+        - autumn
+        - spring
+    """
     class Meta:
         model = Level
         fields = '__all__'
 
 
 class PerevalImageSerializer(serializers.ModelSerializer):
+    """
+        Сериализатор изображений перевала.
+
+        Включает:
+        - строку изображения (data),
+        - подпись к изображению (title).
+
+        Используется для добавления и отображения фото перевала.
+    """
     class Meta:
         model = PerevalImage
         fields = ['data', 'title']
 
 
 class PerevalAddedSerializer(serializers.ModelSerializer):
+    """
+        Сериализатор для модели PerevalAdded.
+
+        Используется при добавлении, редактировании и выводе информации о перевалах.
+
+        Включает:
+        - пользователя (user),
+        - координаты (coords),
+        - уровень сложности (level),
+        - изображения (images),
+        - прочие поля модели перевала.
+    """
     user = UserSerializer()
     coords = CoordsSerializer()
     level = LevelSerializer()
